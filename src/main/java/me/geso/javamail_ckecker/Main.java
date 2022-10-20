@@ -18,14 +18,16 @@ import javax.mail.internet.MimeMessage;
  */
 public class Main {
 	public static void main(String[] args) throws UnknownHostException {
-		if (args.length != 2) {
-			String msg = "Usage: java -Dmail.smtp.host=localhost -jar javamail-checker-0.0.1-SNAPSHOT.jar from@example.com to@example.com";
+		if (args.length != 4) {
+			String msg = "Usage: java -Dmail.smtp.host=localhost -jar javamail-checker-0.0.1-SNAPSHOT.jar from@example.com to@example.com user password";
 			System.out.println(msg);
 			return;
 		}
 
 		String from = args[0];
 		String to = args[1];
+		String user = args[2];
+		String password = args[3];
 
 		Properties properties = System.getProperties();
 		Session session = Session.getDefaultInstance(properties);
@@ -46,7 +48,7 @@ public class Main {
 					new InternetAddress(to));
 			message.setSubject("Test");
 			message.setText(text);
-			Transport.send(message);
+			Transport.send(message, user, password);
 			System.out.println("Sent message successfully....");
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
